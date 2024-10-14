@@ -1,6 +1,6 @@
 interface IMessage {
-  _id: string;
+  _id?: string;
   message: string;
   author: string;
-  datetime: string;
+  datetime?: string;
 }

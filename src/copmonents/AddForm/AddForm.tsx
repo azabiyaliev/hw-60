@@ -1,19 +1,33 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import * as React from 'react'
+import { useState } from 'react';
 
 
 const AddForm = () => {
 
-  const [msg, setMsg] = React.useState({
+  const url = 'http://146.185.154.90:8000/messages';
+
+  const [msg, setMsg] = useState<IMessage>({
     author: '',
     message: '',
   });
 
-  const onSubmit = (e:React.FormEvent) => {
+  const onSubmit = (async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    return setMsg(msg);
-  };
+    const data = new URLSearchParams();
+    data.set('author', msg.author);
+    data.set('message', msg.message);
+    const response = await fetch(url, {
+      method: 'post',
+      body: data,
+    });
+    console.log(response)
+    setMsg(
+      {author: '', message: '',})
+  });
+
+
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMsg(prevState => {
@@ -22,10 +36,7 @@ const AddForm = () => {
         [e.target.name]: e.target.value
       }
     })
-    console.log(e.target.value)
   }
-
-  console.log(msg)
 
   return (
     <form onSubmit={onSubmit} className='border border-1 border-secondary rounded-3 shadow-lg'>
@@ -49,12 +60,10 @@ const AddForm = () => {
           name={'message'}
           onChange={onChange}
         />
-        <Button variant="outline-secondary mb-4">Send</Button>
-      </div>
-      <div>
+        <Button type='submit' variant="outline-secondary mb-4">Send</Button>
       </div>
     </form>
-  );
-};
+  )
+  };
 
 export default AddForm;

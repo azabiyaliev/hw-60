@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 const Receive = () => {
   const url = 'http://146.185.154.90:8000/messages';
   const [messages, setMessages] = useState<IMessage[]>([]);
-  dayjs.locale('ru');
 
   useEffect(() => {
       const fetchData = async () => {
@@ -24,7 +23,7 @@ const Receive = () => {
 
   return (
     <>
-      {messages.map(message => (
+      {messages.reverse().map(message => (
         <div key={message._id} className="mb-2">
           <Toast>
             <Toast.Header closeButton={false}>
